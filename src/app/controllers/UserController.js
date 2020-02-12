@@ -19,6 +19,10 @@ class UserController {
         });
     }
 
+    async update(req, res){
+         return res.json({ message:true});
+    }
+
 
 }
 

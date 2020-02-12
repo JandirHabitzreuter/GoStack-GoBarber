@@ -19,7 +19,9 @@ class User extends Model{
         );
         //Vai ser executado antes do usuario ser criado
         this.addHook('beforeSave', async (user) => {
+
          if(user.password) {
+            console.log('Passou aqui.................');
             user.password_hash = await bcrypt.hash(user.password, 8);
          }
 

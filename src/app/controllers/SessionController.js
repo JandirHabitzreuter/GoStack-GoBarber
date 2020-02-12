@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const auth = require('../../config/auth');
 
 
 class SessionController{
     async store(req, res){
-        const { email, password} = req.body;
+        const { email, password } = req.body;
         const user = await User.findOne({where:{email}});
 
         if(!user){
@@ -25,19 +26,12 @@ class SessionController{
                 name,
                 email,
             },
-            token: jwt.sign({id},
-                            'bb3c5ad9039fd96f77f850c94325ec29',
-                             {
-                              expiresIn:'7d',
-                             }
-
-            );
-
-
+            token: jwt.sign({ id },
+                            auth.secret,{
+                            expiresIn:auth.expiresIn,
+                             }),
         });
     }
-
-
 }
 
 module.exports = new SessionController();
