@@ -41,11 +41,16 @@ class UserController {
             name: Yup.string(),
             email: Yup.string().email(),
             oldPassword: Yup.string().min(6),
-            Password: Yup.string()
+            password: Yup.string()
                          .min(6)
                          .when('oldPassword', (oldPassword,field) =>
-                         oldPassword ? field.require() : field
+                         oldPassword ? field.required() : field
                          ),
+            confirmPassword:Yup.string()
+                                .when('password', (password, field) =>
+                                password ? field.required()
+                                                .oneOf([Yup.ref('password')]) : field
+                                ),
 
         });
 
@@ -58,6 +63,9 @@ class UserController {
                                          // req.userId vem do token
         const user = await User.findByPk(req.userId);
 
+        console.log(email);
+        console.log(user.email);
+
         if(email && (email != user.email)){
             const userExists = await User.findOne({where: {email}});
 
@@ -65,6 +73,8 @@ class UserController {
             return res.status(400).json({error: 'Users already exists.'});
             }
         }
+
+
 
       if(oldPassword && !(await user.checkPassword(oldPassword))){
         return res.status(401).json({error: 'Password does not match.'});

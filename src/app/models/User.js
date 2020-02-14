@@ -21,7 +21,6 @@ class User extends Model{
         this.addHook('beforeSave', async (user) => {
 
          if(user.password) {
-            console.log('Passou aqui.................');
             user.password_hash = await bcrypt.hash(user.password, 8);
          }
 
@@ -30,6 +29,7 @@ class User extends Model{
     }
 
     checkPassword(password){
+        console.log(password);
         return bcrypt.compare(password, this.password_hash);
 
     }
