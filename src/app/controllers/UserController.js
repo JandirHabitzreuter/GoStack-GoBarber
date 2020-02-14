@@ -1,19 +1,19 @@
 const User = require('../models/User');
-const Yup = require('yup');
+import *  as Yup from 'yup';
 
 class UserController {
     async store(req, res){
         const schema = Yup.object().shape({
             // .required = obrigatorio
-            name: Yup.string().required,
+            name: Yup.string().required(),
             //.email valida a formatação de email se tem @ etc...
-            email: Yup.string().email().required,
+            email: Yup.string().email().required(),
 
             // .min(6) senha tem que ter no minimo 6 digitos
-            password: Yup.string().required().min(6)
+            password: Yup.string().required().min(6),
         });
 
-        if(!await schema.isValid(req.body)){
+        if(!(await schema.isValid(req.body))){
             return res.status(400).json({error: 'Validation fails.'});
         }
 
