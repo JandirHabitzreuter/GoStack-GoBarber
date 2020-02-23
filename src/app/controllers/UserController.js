@@ -66,7 +66,7 @@ class UserController {
         console.log(email);
         console.log(user.email);
 
-        if(email && (email != user.email)){
+        if(email && (email !== user.email)){
             const userExists = await User.findOne({where: {email}});
 
             if(userExists)  {
