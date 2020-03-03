@@ -4,7 +4,7 @@ dialect: 'postgres',
 host: 'localhost',
 username: 'postgres',
 password: 'docker',
-database: 'gobarber',
+database: 'database',
 define: {
     timestamps: true,
     underscored : true,

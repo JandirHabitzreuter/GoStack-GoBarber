@@ -1,6 +1,7 @@
 Nodemon -D : Gerenciar o servidor backend para não precisar reiniciar a cada modificação do codigo
 
-Docker :Baixar uma imagem : docker run –name database(aqui dar o nome pra imagem) -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+Docker :Baixar uma imagem : 
+docker run --name nomebase -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 Iniciando um container: docker start nome da base(database)
 Parando um container : docker stop nome da base(database)
 Visualizar container rodando : docker ps
@@ -9,7 +10,8 @@ Visualizar todos os container criado : docker ps -a
 Migrations: Controle de versão para base de dados
 
 Sequelize: Manipular banco de dados sem usar SQL apenas com javascript, ORM abstração do banco de dados
-criar uma migration (O Docker tem que estar ativo): yarn sequelize migration:create -–name=create-users
+criar uma migration (O Docker tem que estar ativo): 
+yarn sequelize migration:create -–name=create-users
 executar a migration: yarn sequelize db:migrate
 voltar a migrate: yarn sequelize db:migrate:undo:all
 

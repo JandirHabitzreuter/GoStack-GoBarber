@@ -1,5 +1,5 @@
-const express =  require('express');
-const routes = require('./routes');
+import express from 'express';
+import routes from './routes';
 require('./database');
 
 class App {
@@ -15,9 +15,7 @@ class App {
 
     routes(){
         this.server.use(routes);
-
     }
-
 }
 
-module.exports =  new App().server;
+export default  new App().server;
