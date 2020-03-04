@@ -1,22 +1,33 @@
 Nodemon -D : Gerenciar o servidor backend para não precisar reiniciar a cada modificação do codigo
 
-Docker :Baixar uma imagem : 
-docker run --name nomebase -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
-Iniciando um container: docker start nome da base(database)
-Parando um container : docker stop nome da base(database)
-Visualizar container rodando : docker ps
-Visualizar todos os container criado : docker ps -a
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Migrations: Controle de versão para base de dados
+Docker - criar ambientes isolados para aplicações e serviços. Com esse isolamento o docker garante que cada container tenha tudo que um serviço precisa para ser executado 
 
-Sequelize: Manipular banco de dados sem usar SQL apenas com javascript, ORM abstração do banco de dados
-criar uma migration (O Docker tem que estar ativo): 
-yarn sequelize migration:create -–name=create-users
-executar a migration: yarn sequelize db:migrate
-voltar a migrate: yarn sequelize db:migrate:undo:all
+* Baixar uma imagem             : docker run --name nomebase -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+* Iniciando um container        : docker start nome da base(database)
+* Parando um container          : docker stop nome da base(database)
+* Parando todos os container    : docker stop $(docker ps -a -q)
+* Visualizar container rodando  : docker ps
+* Visualizar todos os container : docker ps -a
 
-bcryptjs:criptografar senhar
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Sequelize  - Manipular banco de dados sem usar SQL apenas com javascript, ORM abstração do banco de dados
+Migrations - Controle de versão para base de dados
+
+* criar uma migration (O Docker tem que estar ativo) : yarn sequelize migration:create -–name=create-users
+* executar a migration                               : yarn sequelize db:migrate
+* voltar a ultima migrate                            : yarn sequelize db:migrate:undo
+* voltar todas as migrate                            : yarn sequelize db:migrate:undo:all
+* criar dados para testes                            : yarn sequelize db:seed:all
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+bcryptjs : criptografar senhar
 
 Autenticação JWT gerar Token
 
 yup: validação de esquema para validar campos
+
+
