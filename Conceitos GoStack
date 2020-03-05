@@ -20,6 +20,8 @@ Migrations - Controle de versão para base de dados
 * executar a migration                               : yarn sequelize db:migrate
 * voltar a ultima migrate                            : yarn sequelize db:migrate:undo
 * voltar todas as migrate                            : yarn sequelize db:migrate:undo:all
+
+
 * criar dados para testes                            : yarn sequelize db:seed:all
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
