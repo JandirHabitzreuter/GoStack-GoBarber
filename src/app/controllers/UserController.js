@@ -1,4 +1,4 @@
-const User = require('../models/User');
+import User from '../models/User';
 import *  as Yup from 'yup';
 
 class UserController {
@@ -95,4 +95,4 @@ class UserController {
 
 }
 
-module.exports = new UserController();
+export default  new UserController();

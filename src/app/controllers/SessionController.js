@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const User = require('../models/User');
-const auth = require('../../config/auth');
+import User from '../models/User';
+import auth from '../../config/auth';
 import * as Yup from 'yup';
 
 
@@ -46,4 +46,4 @@ class SessionController{
     }
 }
 
-module.exports = new SessionController();
+export default  new SessionController();

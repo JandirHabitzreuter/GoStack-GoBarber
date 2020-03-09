@@ -4,7 +4,7 @@ import sessionController from './app/controllers/SessionController';
 import fileController from './app/controllers/FileController'
 import providerController from './app/controllers/ProviderController'
 
-import authMiddleware from './app/middleware/auth';3
+import authMiddleware from './app/middleware/auth';
 import multerConfig from './config/multer';
 import multer from 'multer';
 
