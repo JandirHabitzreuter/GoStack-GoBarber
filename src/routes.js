@@ -2,7 +2,8 @@ import { Router } from 'express';
 import userController from './app/controllers/UserController';
 import sessionController from './app/controllers/SessionController';
 import fileController from './app/controllers/FileController'
-import providerController from './app/controllers/ProviderController'
+import providerController from './app/controllers/ProviderController';
+import AppointmentController from './app/controllers/AppointmentController';
 
 import authMiddleware from './app/middleware/auth';
 import multerConfig from './config/multer';
@@ -22,4 +23,9 @@ routes.put('/users', userController.update);
 routes.post('/files', upload.single('file'), fileController.store);
 
 routes.get('/providers', providerController.index);
+
+routes.get('/appointments', AppointmentController.index);
+
+routes.post('/appointments', AppointmentController.store);
+
  export default  routes;
