@@ -2,8 +2,10 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 import *  as Yup from 'yup';
+import Notification from '../schemas/Notificaton';
+import pt from 'date-fns/locale/pt';
 
-import {startOfHour, parseISO, isBefore} from 'date-fns';
+import {startOfHour, parseISO, isBefore, format} from 'date-fns';
 
 class AppointmenteController {
     // no attributes sempre tem que retornar o Id   
@@ -82,11 +84,27 @@ class AppointmenteController {
         return res.status(400).json({error: 'Appointment date is not available.'}); 
        }
 
-
        const appointment = await Appointment.create({
            user_id:req.userId,
            provider_id,
            date:hourStart,
+       });
+
+       const user = await User.findByPk(req.userId);
+       const formattedDate =  format(
+           hourStart,
+           // aspas simples não formata o texto
+           // Sem aspas ele substitui o texto
+           " 'dia' dd 'de' MMMM', ás' H:mm'hrs'" ,
+           //Por padrão trás o mês em Inglês, então traduzir para português usando o locale
+           {locale:pt}
+       );
+
+       // Inserindo as notificações com mongoDB
+       await Notification.create({
+           content: `Novo agendamento de ${user.name} 
+                     para ${formattedDate}`,
+           user: provider_id,           
        });
 
        return res.json(appointment);
