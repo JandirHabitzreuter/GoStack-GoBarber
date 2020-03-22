@@ -1,98 +1,88 @@
+import * as Yup from 'yup';
 import User from '../models/User';
-import *  as Yup from 'yup';
 
 class UserController {
-    async store(req, res){
+    async store(req, res) {
         const schema = Yup.object().shape({
             // .required = obrigatorio
             name: Yup.string().required(),
-            //.email valida a formatação de email se tem @ etc...
+            // .email valida a formatação de email se tem @ etc...
             email: Yup.string().email().required(),
 
             // .min(6) senha tem que ter no minimo 6 digitos
             password: Yup.string().required().min(6),
         });
 
-        if(!(await schema.isValid(req.body))){
-            return res.status(400).json({error: 'Validation fails.'});
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails.' });
         }
 
+        const userExists = await User.findOne({
+            where: { email: req.body.email },
+        });
 
-        const userExists = await User.findOne({where: {email: req.body.email}});
-
-        if(userExists)  {
-        return res.status(400).json({error: 'Users already exists.'});
+        if (userExists) {
+            return res.status(400).json({ error: 'Users already exists.' });
         }
 
-        const { id, name, email, provider} = await User.create(req.body);
+        const { id, name, email, provider } = await User.create(req.body);
 
         return res.json({
             id,
             name,
             email,
-            provider
-
+            provider,
         });
     }
 
-    async update(req, res){
+    async update(req, res) {
         const schema = Yup.object().shape({
-
             name: Yup.string(),
             email: Yup.string().email(),
             oldPassword: Yup.string().min(6),
             password: Yup.string()
-                         .min(6)
-                         .when('oldPassword', (oldPassword,field) =>
-                         oldPassword ? field.required() : field
-                         ),
-            confirmPassword:Yup.string()
-                                .when('password', (password, field) =>
-                                password ? field.required()
-                                                .oneOf([Yup.ref('password')]) : field
-                                ),
-
+                .min(6)
+                .when('oldPassword', (oldPassword, field) =>
+                    oldPassword ? field.required() : field
+                ),
+            confirmPassword: Yup.string().when('password', (password, field) =>
+                password ? field.required().oneOf([Yup.ref('password')]) : field
+            ),
         });
 
-        if(!await schema.isValid(req.body)){
-            return res.status(400).json({error: 'Validation fails.'});
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails.' });
         }
 
-        const { email, oldPassword} = req.body;
+        const { email, oldPassword } = req.body;
 
-                                         // req.userId vem do token
+        // req.userId vem do token
         const user = await User.findByPk(req.userId);
 
         console.log(email);
         console.log(user.email);
 
-        if(email && (email !== user.email)){
-            const userExists = await User.findOne({where: {email}});
+        if (email && email !== user.email) {
+            const userExists = await User.findOne({ where: { email } });
 
-            if(userExists)  {
-            return res.status(400).json({error: 'Users already exists.'});
+            if (userExists) {
+                return res.status(400).json({ error: 'Users already exists.' });
             }
         }
 
+        if (oldPassword && !(await user.checkPassword(oldPassword))) {
+            return res.status(401).json({ error: 'Password does not match.' });
+        }
 
+        const { id, name, provider } = await user.update(req.body);
 
-      if(oldPassword && !(await user.checkPassword(oldPassword))){
-        return res.status(401).json({error: 'Password does not match.'});
-
-      }
-
-      const { id, name, provider} = await user.update(req.body);
-
-      return res.json({
-        id,
-        name,
-        email,
-        provider
-
+        return res.json({
+            id,
+            name,
+            email,
+            provider,
         });
     }
-
-
 }
 
-export default  new UserController();
+export default new UserController();

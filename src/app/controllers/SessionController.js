@@ -1,49 +1,44 @@
 import jwt from 'jsonwebtoken';
 
+import * as Yup from 'yup';
 import User from '../models/User';
 import auth from '../../config/auth';
-import * as Yup from 'yup';
 
-
-class SessionController{
-    async store(req, res){
-
+class SessionController {
+    async store(req, res) {
         const schema = Yup.object().shape({
             email: Yup.string().email(),
             password: Yup.string().required(),
         });
 
-        if(!await schema.isValid(req.body)){
-            return res.status(400).json({error: 'Validation fails.'});
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails.' });
         }
-
 
         const { email, password } = req.body;
-        const user = await User.findOne({where:{email}});
+        const user = await User.findOne({ where: { email } });
 
-        if(!user){
-            return res.status(401).json({error: 'User not found!'});
+        if (!user) {
+            return res.status(401).json({ error: 'User not found!' });
         }
 
-        if(!(await user.checkPassword(password))){
-            return res.status(401).json({error: 'Password not match!'});
-
+        if (!(await user.checkPassword(password))) {
+            return res.status(401).json({ error: 'Password not match!' });
         }
 
-        const { id, name} = user;
+        const { id, name } = user;
 
         return res.json({
-            user:{
+            user: {
                 id,
                 name,
                 email,
             },
-            token: jwt.sign({ id },
-                            auth.secret,{
-                            expiresIn:auth.expiresIn,
-                             }),
+            token: jwt.sign({ id }, auth.secret, {
+                expiresIn: auth.expiresIn,
+            }),
         });
     }
 }
 
-export default  new SessionController();
+export default new SessionController();
