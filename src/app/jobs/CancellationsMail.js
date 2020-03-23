@@ -3,14 +3,13 @@ import { format, parseISO } from 'date-fns';
 import Mail from '../../lib/Mail';
 
 class CancellationMail {
-    get Key() {
+    get key() {
         // Chave unica
         return 'CancellationMail';
     }
 
     async handle({ data }) {
         const { appointment } = data;
-
         await Mail.sendMail({
             to: `${appointment.provider.name} <${appointment.provider.email}>`,
             subject: 'Agendamento cancelado',
