@@ -8,6 +8,8 @@ import AppointmentController from './app/controllers/AppointmentController';
 import ScheduleController from './app/controllers/ScheduleController';
 import NotificationController from './app/controllers/NotificationController.js';
 
+import AvailableController from './app/controllers/AvalibleController.js';
+
 import authMiddleware from './app/middleware/auth';
 import multerConfig from './config/multer';
 
@@ -25,6 +27,8 @@ routes.put('/users', userController.update);
 routes.post('/files', upload.single('file'), fileController.store);
 
 routes.get('/providers', providerController.index);
+
+routes.get('/providers/:providerId/available', AvailableController.index);
 
 routes.get('/appointments', AppointmentController.index);
 
